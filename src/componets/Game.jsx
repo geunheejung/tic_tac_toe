@@ -24,6 +24,15 @@ class Game extends React.Component {
     return _cloneDeep(history[sequence]);
   }
 
+  setSequence = (isIncrease) => {
+    const { sequence, history } = this.state;
+    const isFinsh = sequence >= history.length - 1;
+
+    if (sequence < 0 || isFinsh && isIncrease) return;
+
+    this.setState({ sequence: isIncrease ? sequence + 1 : sequence - 1 });
+  }
+
   handleClick = (i) => {
     const { xIsNext, history, sequence } = this.state;
     const squares = this.getCurrent().squares;
@@ -31,15 +40,6 @@ class Game extends React.Component {
     if (calculateWinner(squares) || squares[i]) return;
 
     squares[i] = this.getNextTxt();
-
-    /*
-    * 시간 여행
-    *
-    * 1. prev, next 버튼을 만든다
-    * 2. 현재 시점 인덱스를 관리한다.
-    * 3. (2)의 인덱스에 해당하는 데이터를 그린다.
-
-    * */
 
     this.setState({
       history: [
@@ -53,15 +53,8 @@ class Game extends React.Component {
     });
   }
 
-  changeSequence = (isIncrease) => {
-    const { sequence } = this.state;
-    if (sequence < 0) return;
-
-    this.setState({ sequence: isIncrease ? sequence + 1 : sequence - 1 });
-  }
-
   handleSequence = (isNext) => {
-    this.changeSequence(isNext);
+    this.setSequence(isNext);
   }
 
   render() {
