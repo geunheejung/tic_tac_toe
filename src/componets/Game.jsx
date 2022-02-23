@@ -22,7 +22,7 @@ class Game extends React.Component {
   get step() { return this.state.step + 1; }
 
   get status() {
-    const { squares } = this.current;
+    const { squares } = this.currentHistory;
     const winner = calculateWinner(squares);
 
     return !!winner
@@ -30,7 +30,7 @@ class Game extends React.Component {
       : `Next player: ${this.state.xIsNext ? 'X' : 'O'}`;
   }
 
-  get current() {
+  get currentHistory() {
     const { history, step } = this.state;
     return history[step];
   }
@@ -56,7 +56,7 @@ class Game extends React.Component {
 
   handleClick = (i) => {
     const { xIsNext, history, step } = this.state;
-    const { squares } = this.current;
+    const { squares } = this.currentHistory;
 
     if (calculateWinner(squares) || squares[i]) return;
 
@@ -87,7 +87,7 @@ class Game extends React.Component {
         <div className="status">${this.status}</div>
         <div className="game-board">
           <Board
-            squares={this.current.squares}
+            squares={this.currentHistory.squares}
             xIsNext={xIsNext}
             onClick={this.handleClick}
           />
