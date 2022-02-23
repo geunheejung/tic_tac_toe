@@ -14,27 +14,22 @@ class Game extends React.Component {
         }
       ],
       xIsNext: true,
-      sequence: 0,
+      step: 0,
     }
   }
   getNextTxt = () => this.state.xIsNext ? 'X' : 'O';
 
   getCurrent = () => {
-    const { history, sequence } = this.state;
-    return _cloneDeep(history[sequence]);
+    const { history, step } = this.state;
+    return _cloneDeep(history[step]);
   }
 
-  setSequence = (isIncrease) => {
-    const { sequence, history } = this.state;
-    const isFinsh = sequence >= history.length - 1;
-
-    if (sequence < 0 || isFinsh && isIncrease) return;
-
-    this.setState({ sequence: isIncrease ? sequence + 1 : sequence - 1 });
+  jumpTo = step => {
+    this.setState({ step });
   }
 
   handleClick = (i) => {
-    const { xIsNext, history, sequence } = this.state;
+    const { xIsNext, history, step } = this.state;
     const squares = this.getCurrent().squares;
 
     if (calculateWinner(squares) || squares[i]) return;
@@ -48,22 +43,28 @@ class Game extends React.Component {
           squares
         }
       ],
+      step: step  + 1,
       xIsNext: !xIsNext,
-      sequence: sequence + 1,
     });
   }
 
-  handleSequence = (isNext) => {
-    this.setSequence(isNext);
-  }
-
   render() {
-    const { xIsNext } = this.state;
+    const { xIsNext, history } = this.state;
     const { squares } = this.getCurrent();
     const winner = calculateWinner(squares);
     const status = !!winner
       ? `Winner: ${winner}`
       : `Next player: ${this.getNextTxt()}`;
+
+    const moves = history.map((step, move) => {
+      const desc = move ? `Go to move #${move}` : `Go to game start`;
+
+      return (
+        <li>
+          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+        </li>
+      )
+    });
 
     return (
       <div className="game">
@@ -76,11 +77,7 @@ class Game extends React.Component {
           />
         </div>
         <div className="game-info">
-          <div>
-            <button onClick={() => this.handleSequence(true)}>next</button>
-            <button onClick={() => this.handleSequence(false)}>prev</button>
-          </div>
-          <ol>{/* TODO */}</ol>
+          <ol>{moves}</ol>
         </div>
       </div>
     );
