@@ -11,52 +11,33 @@ class Game extends React.Component {
       history: [
         {
           squares: Array(9).fill(null),
+          player: false,
         }
       ],
       xIsNext: true,
       step: 0,
     }
   }
-  getNextTxt = () => this.state.xIsNext ? 'X' : 'O';
 
-  getCurrent = () => {
-    const { history, step } = this.state;
-    return _cloneDeep(history[step]);
-  }
+  get step() { return this.state.step + 1; }
 
-  jumpTo = step => {
-    this.setState({ step });
-  }
-
-  handleClick = (i) => {
-    const { xIsNext, history, step } = this.state;
-    const squares = this.getCurrent().squares;
-
-    if (calculateWinner(squares) || squares[i]) return;
-
-    squares[i] = this.getNextTxt();
-
-    this.setState({
-      history: [
-        ...history,
-        {
-          squares
-        }
-      ],
-      step: step  + 1,
-      xIsNext: !xIsNext,
-    });
-  }
-
-  render() {
-    const { xIsNext, history } = this.state;
-    const { squares } = this.getCurrent();
+  get status() {
+    const { squares } = this.current;
     const winner = calculateWinner(squares);
-    const status = !!winner
-      ? `Winner: ${winner}`
-      : `Next player: ${this.getNextTxt()}`;
 
-    const moves = history.map((step, move) => {
+    return !!winner
+      ? `Winner: ${winner}`
+      : `Next player: ${this.state.xIsNext ? 'X' : 'O'}`;
+  }
+
+  get current() {
+    const { history, step } = this.state;
+    return history[step];
+  }
+
+  get movesView() {
+    const { history } = this.state;
+    return history.map((step, move) => {
       const desc = move ? `Go to move #${move}` : `Go to game start`;
 
       return (
@@ -65,19 +46,54 @@ class Game extends React.Component {
         </li>
       )
     });
+  }
+
+  jumpTo = step => {
+    this.setState({
+      step
+    });
+  }
+
+  handleClick = (i) => {
+    const { xIsNext, history, step } = this.state;
+    const { squares } = this.current;
+
+    if (calculateWinner(squares) || squares[i]) return;
+
+    const cloneHistory = _cloneDeep(history);
+    const cloneSquares = _cloneDeep(squares);
+
+    const { player } = history[step];
+
+    cloneSquares[i] = player ? 'O' : 'X';
+
+    cloneHistory[this.step] = {
+      squares: cloneSquares,
+      player: !player,
+    };
+
+    this.setState({
+      history: cloneHistory,
+      step: this.step,
+      xIsNext: !xIsNext,
+    });
+  }
+
+  render() {
+    const { xIsNext } = this.state;
 
     return (
       <div className="game">
-        <div className="status">${status}</div>
+        <div className="status">${this.status}</div>
         <div className="game-board">
           <Board
-            squares={squares}
+            squares={this.current.squares}
             xIsNext={xIsNext}
             onClick={this.handleClick}
           />
         </div>
         <div className="game-info">
-          <ol>{moves}</ol>
+          <ol>{this.movesView}</ol>
         </div>
       </div>
     );

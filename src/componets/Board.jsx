@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import Square from './Sqaure';
 
 const Board = ({
@@ -6,6 +7,7 @@ const Board = ({
 }) => {
   const renderSquare = (i) => {
     return <Square
+      key={uuidv4()}
       value={squares[i] || i}
       onSqaureClick={() => onClick(i)}
     />;
