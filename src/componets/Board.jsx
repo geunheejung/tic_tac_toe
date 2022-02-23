@@ -1,69 +1,35 @@
-import React from 'react';
 import Square from './Sqaure';
-import calculateWinner from '../domain/calculateWinner';
 
-class Board extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      squares: Array(9).fill(null),
-      xIsNext: true,
-    }
-  }
-
-  getNextTxt = () => this.state.xIsNext ? 'X' : 'O';
-
-  handleClick(i) {
-    const { squares, xIsNext } = this.state;
-
-    if (calculateWinner(squares) || squares[i]) return;
-
-    const sqaures = [...squares];
-    squares[i] = this.getNextTxt();
-    this.setState({
-      sqaures,
-      xIsNext: !xIsNext,
-    });
-  }
-  
-  renderSquare(i) {
-    const { squares } = this.state;
+const Board = ({
+  squares,
+  onClick
+}) => {
+  const renderSquare = (i) => {
     return <Square
       value={squares[i] || i}
-      onSqaureClick={() => this.handleClick(i)}
+      onSqaureClick={() => onClick(i)}
     />;
   }
 
-  render() {
-    const { squares } = this.state;
-    const winner = calculateWinner(squares);
-    const status = !!winner
-      ? `Winner: ${winner}`
-      : `Next player: ${this.getNextTxt()}`;
-
-    return (
-      <div>
-        <div className="status">{status}</div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+  return (
+    <div>
+      <div className="board-row">
+        {renderSquare(0)}
+        {renderSquare(1)}
+        {renderSquare(2)}
       </div>
-    );
-  }
+      <div className="board-row">
+        {renderSquare(3)}
+        {renderSquare(4)}
+        {renderSquare(5)}
+      </div>
+      <div className="board-row">
+        {renderSquare(6)}
+        {renderSquare(7)}
+        {renderSquare(8)}
+      </div>
+    </div>
+  );
 }
 
 export default Board;
