@@ -45,7 +45,7 @@ class Game extends React.PureComponent {
     });
   }
 
-  changeStepTo = step => this.setState({ step });
+  handleMoveClick = step => this.setState({ step });
 
   changeHistoryTo = hIndex => {
     const { history, step } = this.state;
@@ -86,14 +86,15 @@ class Game extends React.PureComponent {
   }
 
   render() {
-    const { xIsNext, history } = this.state;
+    const { xIsNext, history, step } = this.state;
 
     return (
       <Presenter
         squares={this.currentHistory.squares}
         history={history}
         xIsNext={xIsNext}
-        changeStepTo={this.changeStepTo}
+        step={step}
+        handleMoveClick={this.handleMoveClick}
         onSqaureClick={this.handleSqaureClick}
       />
     )

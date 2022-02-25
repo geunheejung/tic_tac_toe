@@ -1,0 +1,7 @@
+.move_li {
+    margin: 0 0 20px 0;
+}
+
+.move_li.selected > button {
+    
+}
