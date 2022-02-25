@@ -1,6 +1,7 @@
 import React from 'react';
 import _isNull from 'lodash/isNull';
 import Board from '../../componets/Board';
+import MoveList from '../../componets/MoveList';
 import calculateWinner from '../../domain/calculateWinner';
 import './styles.css';
 
@@ -8,23 +9,10 @@ const Presenter = ({
   squares,
   xIsNext,
   history,
-  changeStepTo,
+  step,
+  handleMoveClick,
   onSqaureClick,
 }) => {
-
-  const renderMoviews = () => {
-    return history.map(({ point: { x, y } }, move) => {
-      const desc = move ? `Go to move #${move}` : `Go to game start`;
-
-      return (
-        <li>
-          <button onClick={() => changeStepTo(move)}>
-            {desc} <span>{_isNull(x) || `x: ${x} , y: ${y}`}</span>
-          </button>
-        </li>
-      )
-    });
-  }
 
   const renderStatus = () => {
     const winner = calculateWinner(squares);
@@ -46,7 +34,13 @@ const Presenter = ({
         />
       </div>
       <div className="game-info">
-        <ol>{renderMoviews()}</ol>
+        <ol>
+          <MoveList
+            history={history}
+            step={step}
+            onMoveClick={handleMoveClick}
+          />
+        </ol>
       </div>
     </div>
   )
