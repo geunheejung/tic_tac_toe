@@ -1,4 +1,5 @@
 import React from 'react';
+import _isNull from 'lodash/isNull';
 import Board from '../../componets/Board';
 import calculateWinner from '../../domain/calculateWinner';
 import './styles.css';
@@ -12,12 +13,14 @@ const Presenter = ({
 }) => {
 
   const renderMoviews = () => {
-    return history.map((step, move) => {
+    return history.map(({ point: { x, y } }, move) => {
       const desc = move ? `Go to move #${move}` : `Go to game start`;
 
       return (
         <li>
-          <button onClick={() => changeStepTo(move)}>{desc}</button>
+          <button onClick={() => changeStepTo(move)}>
+            {desc} <span>{_isNull(x) || `x: ${x} , y: ${y}`}</span>
+          </button>
         </li>
       )
     });
