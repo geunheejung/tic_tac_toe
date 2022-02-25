@@ -12,11 +12,17 @@ class Game extends React.PureComponent {
         {
           squares: Array(9).fill(null),
           player: false,
+          point: {
+            x: null,
+            y: null
+          }
         }
       ],
       xIsNext: true,
       step: 0,
     }
+
+    this.GAME_MAP = 3;
   }
 
   get step() { return this.state.step + 1; }
@@ -55,6 +61,10 @@ class Game extends React.PureComponent {
     cloneHistory[this.step] = {
       squares: cloneSquares,
       player: !player,
+      point: {
+        x: Math.floor(hIndex / this.GAME_MAP),
+        y: hIndex % this.GAME_MAP
+      },
     };
 
     this.setState({
