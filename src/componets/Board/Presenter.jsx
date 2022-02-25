@@ -1,10 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
-import Square from './Sqaure';
+import Square from '../Sqaure';
+import './styles.css';
 
 const Board = ({
-  squares,
-  onClick
-}) => {
+   squares,
+   onClick
+ }) => {
   const renderSquare = (i) => {
     return <Square
       key={uuidv4()}

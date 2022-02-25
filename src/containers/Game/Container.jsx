@@ -1,9 +1,9 @@
 import React from 'react';
 import _cloneDeep from 'lodash/cloneDeep';
-import Board from './Board';
-import calculateWinner from '../domain/calculateWinner';
+import Presenter from './Presenter';
+import calculateWinner from '../../domain/calculateWinner';
 
-class Game extends React.Component {
+class Game extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -20,15 +20,6 @@ class Game extends React.Component {
   }
 
   get step() { return this.state.step + 1; }
-
-  get status() {
-    const { squares } = this.currentHistory;
-    const winner = calculateWinner(squares);
-
-    return !!winner
-      ? `Winner: ${winner}`
-      : `Next player: ${this.state.xIsNext ? 'X' : 'O'}`;
-  }
 
   get currentHistory() {
     const { history, step } = this.state;
@@ -48,24 +39,18 @@ class Game extends React.Component {
     });
   }
 
-  jumpTo = step => {
-    this.setState({
-      step
-    });
-  }
+  changeStepTo = step => this.setState({ step });
 
-  handleClick = (i) => {
-    const { xIsNext, history, step } = this.state;
+  changeHistoryTo = hIndex => {
+    const { history, step } = this.state;
     const { squares } = this.currentHistory;
-
-    if (calculateWinner(squares) || squares[i]) return;
 
     const cloneHistory = _cloneDeep(history);
     const cloneSquares = _cloneDeep(squares);
 
     const { player } = history[step];
 
-    cloneSquares[i] = player ? 'O' : 'X';
+    cloneSquares[hIndex] = player ? 'O' : 'X';
 
     cloneHistory[this.step] = {
       squares: cloneSquares,
@@ -73,30 +58,35 @@ class Game extends React.Component {
     };
 
     this.setState({
-      history: cloneHistory,
+      history: cloneHistory
+    });
+  }
+
+  handleSqaureClick = i => {
+    const { xIsNext } = this.state;
+    const { squares } = this.currentHistory;
+
+    if (calculateWinner(squares) || squares[i]) return;
+
+    this.changeHistoryTo(i);
+    this.setState({
       step: this.step,
       xIsNext: !xIsNext,
     });
   }
 
   render() {
-    const { xIsNext } = this.state;
+    const { xIsNext, history } = this.state;
 
     return (
-      <div className="game">
-        <div className="status">${this.status}</div>
-        <div className="game-board">
-          <Board
-            squares={this.currentHistory.squares}
-            xIsNext={xIsNext}
-            onClick={this.handleClick}
-          />
-        </div>
-        <div className="game-info">
-          <ol>{this.movesView}</ol>
-        </div>
-      </div>
-    );
+      <Presenter
+        squares={this.currentHistory.squares}
+        history={history}
+        xIsNext={xIsNext}
+        changeStepTo={this.changeStepTo}
+        onSqaureClick={this.handleSqaureClick}
+      />
+    )
   }
 }
 

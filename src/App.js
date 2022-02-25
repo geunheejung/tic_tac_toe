@@ -1,4 +1,4 @@
-import Game from './componets/Game';
+import Game from './containers/Game';
 
 const App = () => (
   <div>
