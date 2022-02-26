@@ -32,22 +32,10 @@ class Game extends React.PureComponent {
     return history[step];
   }
 
-  get movesView() {
-    const { history } = this.state;
-    return history.map((step, move) => {
-      const desc = move ? `Go to move #${move}` : `Go to game start`;
-
-      return (
-        <li>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
-        </li>
-      )
-    });
-  }
-
   handleMoveClick = step => this.setState({ step });
 
   changeHistoryTo = hIndex => {
+    debugger;
     const { history, step } = this.state;
     const { squares } = this.currentHistory;
 
