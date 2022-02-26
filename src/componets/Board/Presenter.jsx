@@ -2,8 +2,6 @@ import { v4 as uuidv4 } from 'uuid';
 import Square from '../Sqaure';
 import './styles.css';
 
-
-
 const Board = ({
   squares,
   boardRow,
@@ -11,20 +9,29 @@ const Board = ({
  }) => {
   const renderSquare = () => {
     const boardList = Array(boardRow).fill(0);
-    let squareIndex = 0;
+    const _squares = squares.map((_, i) => i);
+    let start = 0;
+    let end = boardRow;
 
-    return boardList.map((row, x) => (
-      <div className="board-row" key={uuidv4()}>
-        {boardList.map((col) => {
-          squareIndex += 1;
-          return <Square
-            key={uuidv4()}
-            value={squares[squareIndex] || squareIndex}
-            onSqaureClick={() => onClick(squareIndex)}
-          />
-        })}
-      </div>
-    ))
+    return boardList.map((row, x) => {
+      const result = (
+        <div className="board-row" key={uuidv4()}>
+          {_squares.slice(start, end).map((col) => {
+            return <Square
+              key={uuidv4()}
+              value={squares[col] || col}
+              onSqaureClick={() => {
+                onClick(col)}
+              }
+            />
+          })}
+        </div>
+      );
+
+      start += boardRow;
+      end += boardRow;
+      return result;
+    })
   }
 
   return (
