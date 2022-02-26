@@ -3,7 +3,7 @@ import _cloneDeep from 'lodash/cloneDeep';
 import Presenter from './Presenter';
 import calculateWinner from '../../domain/calculateWinner';
 
-class Game extends React.PureComponent {
+class Game extends React.Component {
   constructor(props) {
     super(props);
 
@@ -20,6 +20,7 @@ class Game extends React.PureComponent {
       ],
       xIsNext: true,
       step: 0,
+      isSort: false,
     }
 
     this.GAME_MAP = 3;
@@ -35,7 +36,6 @@ class Game extends React.PureComponent {
   handleMoveClick = step => this.setState({ step });
 
   changeHistoryTo = hIndex => {
-    debugger;
     const { history, step } = this.state;
     const { squares } = this.currentHistory;
 
@@ -73,8 +73,14 @@ class Game extends React.PureComponent {
     });
   }
 
+  handleSortClick = () => {
+    const { isSort, history } = this.state;
+
+    this.setState({ history: history.reverse(), isSort: !isSort });
+  }
+
   render() {
-    const { xIsNext, history, step } = this.state;
+    const { xIsNext, history, step, isSort } = this.state;
 
     return (
       <Presenter
@@ -82,8 +88,10 @@ class Game extends React.PureComponent {
         history={history}
         xIsNext={xIsNext}
         step={step}
+        isSort={isSort}
         handleMoveClick={this.handleMoveClick}
         onSqaureClick={this.handleSqaureClick}
+        onSortClick={this.handleSortClick}
       />
     )
   }

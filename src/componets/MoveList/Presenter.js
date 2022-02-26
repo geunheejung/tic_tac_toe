@@ -11,11 +11,11 @@ const MoveList = props => {
   } = props;
 
   return history.map(({ point: { x, y } }, move) => {
-    const desc = move ? `Go to move #${move}` : `Go to game start`;
-
+    const desc = x || y ? `Go to move #${move}` : `Go to game start`;
+    
     return (
       <li
-        key={move}
+        key={`${x},${y}`}
         className={classNames({
           move_li: true,
           selected: step === move,
