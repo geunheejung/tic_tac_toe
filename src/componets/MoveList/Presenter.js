@@ -1,5 +1,6 @@
 import React from 'react';
 import _isNull from 'lodash/isNull';
+import { v4 as uuidv4 } from 'uuid';
 import classNames from 'classnames';
 import './styles.css';
 
@@ -11,11 +12,11 @@ const MoveList = props => {
   } = props;
 
   return history.map(({ point: { x, y } }, move) => {
-    const desc = move ? `Go to move #${move}` : `Go to game start`;
+    const desc = x || y ? `Go to move #${move}` : `Go to game start`;
 
     return (
       <li
-        key={move}
+        key={uuidv4()}
         className={classNames({
           move_li: true,
           selected: step === move,

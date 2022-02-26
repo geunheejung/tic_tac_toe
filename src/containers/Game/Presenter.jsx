@@ -10,8 +10,10 @@ const Presenter = ({
   xIsNext,
   history,
   step,
+                     isSort,
   handleMoveClick,
   onSqaureClick,
+  onSortClick,
 }) => {
 
   const renderStatus = () => {
@@ -30,7 +32,7 @@ const Presenter = ({
         <Board
           squares={squares}
           xIsNext={xIsNext}
-          boardRow={squares.length / 3}
+          boardRow={Math.floor(squares.length / 3)}
           onClick={onSqaureClick}
         />
       </div>
@@ -41,6 +43,10 @@ const Presenter = ({
             step={step}
             onMoveClick={handleMoveClick}
           />
+          <ol>
+            <button onClick={onSortClick} disabled={isSort}>오름차순</button>
+            <button onClick={onSortClick} disabled={!isSort}>내림차순</button>
+          </ol>
         </ol>
       </div>
     </div>
