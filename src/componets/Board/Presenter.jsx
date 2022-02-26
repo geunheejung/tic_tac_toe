@@ -5,11 +5,12 @@ import './styles.css';
 
 
 const Board = ({
-   squares,
-   onClick
+  squares,
+  boardRow,
+  onClick
  }) => {
   const renderSquare = () => {
-    const boardList = Array(3).fill(0);
+    const boardList = Array(boardRow).fill(0);
     let squareIndex = 0;
 
     return boardList.map((row, x) => (
