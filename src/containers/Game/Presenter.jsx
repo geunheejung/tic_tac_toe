@@ -30,6 +30,7 @@ const Presenter = ({
         <Board
           squares={squares}
           xIsNext={xIsNext}
+          boardRow={squares.length / 3}
           onClick={onSqaureClick}
         />
       </div>
