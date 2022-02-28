@@ -10,14 +10,14 @@ const Presenter = ({
   xIsNext,
   history,
   step,
-                     isSort,
+  isSort,
   handleMoveClick,
   onSqaureClick,
   onSortClick,
 }) => {
 
   const renderStatus = () => {
-    const winner = calculateWinner(squares);
+    const { winner } = calculateWinner(squares);
     const status = !!winner
       ? `Winner: ${winner}`
       : `Next player: ${xIsNext ? 'X' : 'O'}`;
