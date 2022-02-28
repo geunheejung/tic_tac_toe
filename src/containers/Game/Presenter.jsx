@@ -18,9 +18,14 @@ const Presenter = ({
 
   const renderStatus = () => {
     const { winner } = calculateWinner(squares);
-    const status = !!winner
-      ? `Winner: ${winner}`
-      : `Next player: ${xIsNext ? 'X' : 'O'}`;
+    let status;
+    const player = xIsNext ? 'X' : 'O';
+
+    status = winner === null
+      ? `Next player: ${player}`
+      : `Winner: ${winner}`;
+
+    if (!winner && squares.every(i => !!i)) status = `Draw: ${player}`;
 
     return status;
   }
