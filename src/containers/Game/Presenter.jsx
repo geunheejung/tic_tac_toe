@@ -27,7 +27,7 @@ const Presenter = ({
 
   return (
     <div className="game">
-      <div className="status">${renderStatus()}</div>
+      <div className="status">{renderStatus()}</div>
       <div className="game-board">
         <Board
           squares={squares}
