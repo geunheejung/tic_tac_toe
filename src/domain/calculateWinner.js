@@ -10,15 +10,27 @@ const calculateWinner = (squares) => {
     [2, 4, 6],
   ];
 
+  const winnerInfo = {
+    winner: null,
+    point: {
+      a: null,
+      b: null,
+      c: null,
+    }
+  }
+
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
 
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      winnerInfo.winner = squares[a];
+      winnerInfo.point = { a, b, c }
+
+      break;
     }
   }
 
-  return null;
+  return winnerInfo;
 }
 
 export default calculateWinner;
